@@ -1,0 +1,41 @@
+services:
+  # Serviço do Banco de Dados
+  db:
+    image: postgres:15-alpine
+    container_name: creditflow-db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=creditflowdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+
+      - ./pgdata:/var/lib/postgresql/data
+    healthcheck:
+
+      test: ["CMD-SHELL", "pg_isready -U postgres -d creditflowdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - creditflow-net
+  app:
+    build: .
+    container_name: creditflow-app
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/creditflowdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - creditflow-net
+
+networks:
+  creditflow-net:
+    driver: bridge

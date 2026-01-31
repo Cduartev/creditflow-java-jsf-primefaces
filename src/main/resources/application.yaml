@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: creditflow
+
+  datasource:
+    # A mágica do Docker vs Local acontece aqui:
+    # Se a variável de ambiente existir (Docker), usa ela.
+    # Se não (na sua IDE), usa o valor padrão após os dois pontos.
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/creditflowdb}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update # Cuidado em produção! Para dev é ótimo.
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+# Configurações Específicas do JoinFaces / PrimeFaces
+joinfaces:
+  primefaces:
+    theme: saga # Tema moderno e clean do PrimeFaces
+    # font-awesome: true # Descomente se for usar ícones FontAwesome
