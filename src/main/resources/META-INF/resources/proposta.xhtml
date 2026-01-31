@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>CreditFlow - Nova Proposta</title>
+    <style>
+        body { background-color: #f4f4f9; font-family: sans-serif; }
+        .card { max-width: 800px; margin: 50px auto; }
+    </style>
+</h:head>
+
+<h:body>
+    <h:form id="formProposta">
+        <p:growl id="msgs" showDetail="true" life="5000" />
+
+        <div class="card">
+            <p:panel header="Nova Solicitação de Crédito" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                
+                <h:panelGrid columns="2" cellpadding="10" style="width: 100%">
+                    
+                    <p:outputLabel for="empresa" value="Nome da Empresa:" />
+                    <p:inputText id="empresa" 
+                                 value="#{cadastroPropostaController.proposta.nomeEmpresa}" 
+                                 required="true" 
+                                 requiredMessage="O nome da empresa é obrigatório"
+                                 style="width: 100%"/>
+
+                    <p:outputLabel for="cnpj" value="CNPJ:" />
+                    <p:inputMask id="cnpj" 
+                                 value="#{cadastroPropostaController.proposta.cnpj}" 
+                                 mask="99.999.999/9999-99" 
+                                 required="true"
+                                 style="width: 100%"/>
+
+                    <p:outputLabel for="valor" value="Valor Solicitado:" />
+                    <p:inputNumber id="valor" 
+                                   value="#{cadastroPropostaController.proposta.valorSolicitado}" 
+                                   symbol="R$ " 
+                                   decimalSeparator="," 
+                                   thousandSeparator="."
+                                   style="width: 100%"/>
+
+                    <p:outputLabel for="prazo" value="Prazo (Meses):" />
+                    <p:spinner id="prazo" 
+                               value="#{cadastroPropostaController.proposta.prazoMeses}" 
+                               min="12" 
+                               max="120" 
+                               stepFactor="6"
+                               style="width: 100%"/>
+
+                </h:panelGrid>
+
+                <f:facet name="footer">
+                    <p:commandButton value="Enviar Proposta" 
+                                     action="#{cadastroPropostaController.salvar}" 
+                                     update="@form" 
+                                     icon="pi pi-check" 
+                                     styleClass="ui-button-success" 
+                                     style="width: 100%"/>
+                </f:facet>
+            </p:panel>
+        </div>
+    </h:form>
+</h:body>
+</html>
